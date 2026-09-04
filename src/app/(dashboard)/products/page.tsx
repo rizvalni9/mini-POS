@@ -1,15 +1,32 @@
 "use client"
 
 import Link from 'next/link';
-import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Search } from 'lucide-react';
+import { useMemo, useState,useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
 import Input from '@/components/ui/Input';
-import React from 'react'
+import { Product } from '@/types/product';
+import { formatCurrency } from '@/utils/currency';
+import { getProducts }  from "@/utils/product-storage"
 
 export default function ProductsPage() {
   const [search, setSearch] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(()=>{
+    setProducts(getProducts());
+  },[]);
+
+  const filtered = useMemo(() => {
+    const keyword = search.toLowerCase();
+
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(keyword) ||
+      product.sku.toLowerCase().includes(keyword)
+    ); 
+  },[products,search]);
+
   return (
     <div>
         <div className="mb-5 flex flex-col gap sm:flex-row sm:items-end sm:justify-between">
@@ -19,16 +36,58 @@ export default function ProductsPage() {
             <p className="mt-2 text-sm text-slate-500">Kelola produk, harga, dan stok</p>
           </div>
           <Link href="/products/create">
-            <Button className="w-full sm:w-auto"><Plus size={18}/>
+            <Button className="w-full sm:w-auto cursor-pointer"><Plus size={18}/>
+            Tambah Produk
             </Button>
           </Link>
         </div>
 
         <div className="mb-5 max-w-md">
-          <Input placeholder="Cari nama atau SKU..." value={search} onChange={(e)=> setSearch(e.target.value)}/>
+          <Input placeholder="Cari nama atau SKU..." value={search} onChange={(e)=> setSearch(e.target.value)} className="pl-3"/>
         </div>
+        {filtered.length > 0 && (
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th className="px-5 py-4">Produk</th>
+                    <th className="px-5 py-4">SKU</th>
+                    <th className="px-5 py-4">Harga</th>
+                    <th className="px-5 py-4">Stok</th>
+                    <th className="px-5 py-4 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filtered.map((product) => {
+                    const stockColor = product.stock <= 5? "bg-amber-100 text-amber-800":"bg-emerald-100 text-emerald-800";
+                    return(
+                    <tr key={product.id} className="hover:bg-slate-50/70">
+                      <td className="px-5 py-4 font-bold text-slate-900">{product.name}</td>
+                      <td className="px-5 py-4 text-slate-500">{product.sku}</td>
+                      <td className="px-5 py-4 font-semibold text-slate-500">{formatCurrency(product.price)}</td>
+                      <td className="px-5 py-4"><span className={"rounded-full px-2 py-1 text-xs font-bold " +stockColor}>{product.stock}</span></td>
+                      <td className="px-5 py-4">
+                        <div className="flex justify-center gap-2">
+                          <Link href={"/products/"+product.id +"/edit"} className="rounded-lg border px-3 py-2 text-sm text-slate-600 hover:bg-slate-300 transition-colors duration-300">Edit</Link>
+                          <button className="rounded-lg border border-rose-200 px-3 py-2 text-sm text-rose-600 cursor-pointer hover:bg-rose-200 transition-colors duration-300">Hapus</button>
+                        </div>
+                      </td>
+                    </tr>
+                  )})}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        {products.length === 0 && (<EmptyState title="Belum ada produk" description="Tambahkan produk pertama untuk memulai transaksi POS"/>)}
 
-        <EmptyState title="Belum ada produk" description="Tambahkan produk pertama untuk memulai transaksi POS"/>
+        {products.length > 0 && filtered.length === 0 &&(
+          <div className="rounded-2xl bg-white p-8 text-center text-sm text-slate-500">
+            <Search className="mx-auto mb-2"/>
+            Produk tidak ditemukan
+          </div>
+        )}
     </div>
   )
 }
