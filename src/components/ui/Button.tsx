@@ -1,9 +1,8 @@
-import React from 'react'
 import type { ButtonHTMLAttributes } from 'react';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {variant?: "primary" | "secondary" | "danger"};
 
-export default function Button({className ="",variant="primary", ...props}: Props) {
+export function Button({className ="",variant="primary", ...props}: Props) {
     const styles ={
       primary: "bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-indigo-300",
       secondary:"border border-slate-200 bg-white text-slate-700 hover:bg-slate-50",

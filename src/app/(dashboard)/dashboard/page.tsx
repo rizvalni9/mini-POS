@@ -1,4 +1,3 @@
-import React from 'react'
 import { Boxes,
          CircleDollarSign, 
          ReceiptText, 
@@ -40,7 +39,7 @@ export default function DashboardPage() {
         </h1>
 
         <p className='mt-2 text-sm text-slate-500'>
-          Ringkasan aktivitas MiniPOS hari ini
+          Ringkasan aktivitas MiniPOS hari ini.
         </p>
       </div>
 
