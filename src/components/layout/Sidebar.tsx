@@ -69,7 +69,7 @@ export function Sidebar(){
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex item-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                            className={`flex shrink-0 item-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
                                 active
                                 ?"bg-indigo-600 text-white" 
                                 :"text-slate-300 hover:bg-slate-900 hover:text-white"} `}>
@@ -79,6 +79,12 @@ export function Sidebar(){
                     );
                 })}
             </nav>
+
+            <div>
+                <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <LogOut size={18}/>Logout
+                </button>
+            </div>
         </aside>
     );
 }

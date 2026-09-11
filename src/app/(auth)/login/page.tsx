@@ -18,7 +18,7 @@ export default function LoginPage(){
 
                     <Input label="Password" type="password" placeholder="Minimal 6 karakter"/>
 
-                    <Button type="submit" disabled>
+                    <Button type="submit">
                         Login
                     </Button>
                 </form>
