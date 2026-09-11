@@ -74,7 +74,7 @@ if (error) {
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-bold text-indigo-600">MASTER DATA</p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">Produk</h1>
+          <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-200">Produk</h1>
           <p className="mt-2 text-sm text-slate-500">Kelola produk, harga, dan stok</p>
         </div>
         <Link href="/products/create">

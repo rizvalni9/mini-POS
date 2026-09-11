@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
     Boxes,
     LayoutDashboard,
+    LogOut,
     ReceiptText,
     ShoppingCart,
 }from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 
 const menu = [
     {
@@ -34,18 +36,32 @@ const menu = [
 
 export function Sidebar(){
     const pathname = usePathname();
+    const router = useRouter();
+    const { logout } = useAuth();
+
+    async function handleLogout(){
+        await logout();
+        router.replace("/login");
+    }
     
     return(
-        <aside className="bg-slate-950 text-white lg:min-h-screen lg:w-64">
-            <div className="text-xl font-black flex justify-center">
-                MiniPOS
+        <aside className="border-b border-slate-200 bg-slate-950 text-white lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r lg:border-slate-800">
+            <div className="flex items-center justify-between p-5 lg:block">
+                <div>
+                    <div className="text-xl font-black tracking-tight">
+                        MiniPOS
+                    </div>
+
+                    <div className="mt-1 text-xs text-slate-400">
+                        Bootcamp Project
+                    </div>
+                </div>
+                <button onClick={handleLogout} className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white lg:hidden" aria-label="Logout">
+                    <LogOut size={18}/>
+                </button>
             </div>
 
-            <div className="mt-1 text-xs text-slate-400 flex justify-center">
-                Bootcamp Project
-            </div>
-
-            <nav className="grid gap-2 px-4">
+            <nav className="flex gap-2 overflow-x-auto px-4 pb-4 lg:grid lg:pb-0">
                 {menu.map((item) =>{
                     const Icon = item.icon;
                     const active = pathname === item.href ||(item.href !== "/dashboard" && pathname.startsWith(item.href));
