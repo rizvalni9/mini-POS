@@ -1,15 +1,18 @@
 "use client"
 import React from "react";
 import { useRouter } from 'next/navigation';
-import { addProduct, getProducts } from '@/services/product.service';
+import { createProduct} from '@/services/product.service';
 import { ProductForm } from '@/components/products/product-form';
 import type { ProductInput } from '@/types/product';
+import { useAuth } from "@/contexts/auth-context";
 
 export default function CreateProductPage() {
   const router = useRouter();
+  const { user } = useAuth();
   
   async function handleSubmit(value: ProductInput){
-    await addProduct(value);
+    if(!user) return;
+    await createProduct(user.uid, value);
     router.push("/products");
   }
   

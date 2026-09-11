@@ -98,7 +98,10 @@ export default function NewTransactionPage() {
 
   return (
     <div>
-      <h1>Kasir / POS</h1>
+        <div className="flex flex-col py-3">
+          <p className="text-sm font-bold text-indigo-600">TRANSACTION</p>
+          <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-200">Kasir / POS</h1>
+        </div>
       <div className="grid gap-3">
         {filtered.map((product) => (
           <div key={product.id} className="flex items-center justify-between rounded-2xl border bg-white p-4">
@@ -138,7 +141,7 @@ export default function NewTransactionPage() {
         ))}
         <div className="border-2 rounded-2xl p-2 border-indigo-600">
           <div className="flex justify-center gap-2">
-            <Input type="number" min={0} value={discount} onChange={(event) => setDiscount(Number(event.target.value))}/>
+            <Input type="number" min={0} value={discount} onChange={(event) => setDiscount(Number(event.target.value))} className="max-w-[80px] text-center"/>
             <select value={paymentMethod} onChange={(event) => setPaymentMethod(event.target.value as PaymentMethod)}>
               <option value="cash">Cash</option>
               <option value="transfer">Transfer</option>
